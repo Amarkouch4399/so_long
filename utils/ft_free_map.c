@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   ft_free_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ouamarko <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 13:40:11 by ouamarko          #+#    #+#             */
-/*   Updated: 2025/11/04 19:24:45 by ouamarko         ###   ########.fr       */
+/*   Created: 2025/11/04 19:23:27 by ouamarko          #+#    #+#             */
+/*   Updated: 2025/11/04 19:24:03 by ouamarko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_H
-#define SO_LONG_H
+#include "../includes/so_long.h"
 
-#include "../minilibx-linux/mlx.h"
-#include "../gnl/get_next_line.h"
-#include <stdlib.h>
-
-typedef struct	s_map
+void    ft_free_map(t_map *map, int lines)
 {
-	char	**tab;
-	int	width;
-	int	lenght;
-	int	player_x;
-	int	player_y;
-}	t_map;
+    int i;
 
-int	close_window(void *param);
-char	*ft_strstr(const char *big, const char *little);
-void	ft_lenght(int fd, t_map *map);
-void    ft_free_map(t_map *map, int lines);
-
-#endif
-
+    if (!map || !map->tab)
+        return;
+    i = 0;
+    while (i < lines)
+    {
+        free(map->tab[i]);
+        i++;
+    }
+    free(map->tab);
+    map->tab = NULL;
+}

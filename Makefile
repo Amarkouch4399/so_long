@@ -6,7 +6,7 @@
 #    By: ouamarko <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/26 20:02:57 by ouamarko          #+#    #+#              #
-#    Updated: 2025/10/29 16:23:53 by ouamarko         ###   ########.fr        #
+#    Updated: 2025/11/04 19:24:25 by ouamarko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME	= so_long
@@ -15,6 +15,7 @@ SRC	= so_long.c \
 	  utils/ft_strstr.c \
 	  utils/ft_lenght.c \
 	  utils/ft_split.c \
+	  utils/ft_free_map.c \
 	  $(GNL_DIR)/get_next_line.c \
 	  $(GNL_DIR)/get_next_line_utils.c \
 
