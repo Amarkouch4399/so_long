@@ -19,42 +19,29 @@ int	close_window(void *param)
 	exit(0);
 }
 
-int ft_parsemap(int fd, t_map *map)
+char	**ft_read_map(int fd, t_map map)
 {
-    char    *line;
-    int     i;
-    
-    map->tab = malloc(sizeof(char *) * (map->lenght + 1));
-    if (!map->tab)
-        return (0);
-    i = 0;
-    while (i < map->lenght)
-    {
-        line = get_next_line(fd);
-        if (!line)
-        {
-            ft_free_map(map, i);
-            close(fd);
-            return (0);
-        } 
-        map->tab[i] = malloc(sizeof(char) * (map->width + 1));
-        if (!map->tab[i])
-        {
-            free(line);
-            ft_free_map(map, i);
-            close(fd);
-            return (0);
-        }
-        strncpy(map->tab[i], line, map->width);
-        map->tab[i][map->width] = '\0';
-        free(line);
-        i++;
-    }
-        while ((line = get_next_line(fd)))
-		free(line); 
-    //map->tab[i] = NULL;
-    close(fd);
-    return (1);
+	char	*line;
+	char	**tab_map;
+	int	i;
+	int	length;
+
+	if (fd < 0)
+		return (NULL);
+	length = map.length;
+	tab_map = malloc(sizeof(char *) * (length + 1));
+	if (!tab_map)
+		return (NULL);
+	i = 0;
+	while ((line = get_next_line(fd)))
+	{
+		ft_trim_newline(line);
+		tab_map[i] = line;
+		i++;
+	}
+	tab_map[i] = NULL;
+	close(fd);
+	return (tab_map);
 }
 
 int	main(int argc, char **argv)
@@ -70,12 +57,25 @@ int	main(int argc, char **argv)
 		return 0;
 	}
 	fd = open(argv[1], O_RDONLY);
-	ft_lenght(fd, &map);
-	printf("%d\n", map.width);
-	printf("%d\n", map.lenght);
 	if (fd < 0)
 		return (perror("open"), 1);
-	ft_parsemap(fd, &map);
+	ft_length(fd, &map);
+	close(fd);
+	printf("%d\n", map.width);
+	printf("%d\n", map.length);
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+		return (perror("open"), 1);
+	map.tab = ft_read_map(fd, map);
+	ft_validate_format(&map);
+	ft_printf("=== MAP ===\n");
+    	int	i = 0;
+    	while (i < map.length)
+    	{
+        	if (map.tab[i])
+            	printf("%s\n", map.tab[i]);
+        	i++;
+    	}
 	/*
 	int	i = 0;
 	 while (map.tab[i])

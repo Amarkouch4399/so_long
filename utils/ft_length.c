@@ -12,33 +12,33 @@
 
 #include "../includes/so_long.h"
 
-void	ft_lenght(int fd, t_map *map)
+void	ft_length(int fd, t_map *map)
 {
-	int	lenght;
+	int	length;
 	int	width;
 	char	*line;
-	lenght = 0;
+	length = 0;
 	width = 0;
 
 	line = get_next_line(fd);
 	if (!line)
 	{
 		map->width = 0;
-		map->lenght = 0;
+		map->length = 0;
 		return ;
 	}
 	while (line[width] && line[width] != '\n')
 		width++;
 	while (line)
 	{
-		lenght++;
+		length++;
 		printf("%s", line);	
 		free(line);
 		line = get_next_line(fd);
 	}
 	free(line);
 	map->width = width;
-	map->lenght = lenght;
+	map->length = length;
 	close(fd);
 }
 
