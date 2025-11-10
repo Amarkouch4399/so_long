@@ -18,6 +18,10 @@ SRC	= so_long.c \
 	  utils/ft_split.c \
 	  utils/ft_free_map.c \
 	  utils/ft_trim_newline.c \
+	  utils/ft_check_path.c \
+	  utils/ft_free_tab.c \
+	  utils/ft_load_textures.c \
+	  utils/ft_render_map.c \
 	  parsing/ft_validate_format.c \
 	  $(GNL_DIR)/get_next_line.c \
 	  $(GNL_DIR)/get_next_line_utils.c \

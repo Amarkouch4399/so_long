@@ -149,5 +149,9 @@ int	ft_validate_format(t_map *map)
 		return (1);
 	if (ft_check_characters_and_counts(map) != 0)
 		return (1);
+	if (ft_check_path(map))
+			return (1);
+	else
+			ft_printf("Error\nAll collectibles and exit are not reachable.\n");
 	return (0);
 }

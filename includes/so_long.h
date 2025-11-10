@@ -16,8 +16,14 @@
 #include "../minilibx-linux/mlx.h"
 #include "../gnl/get_next_line.h"
 #include <stdlib.h>
-#include <unistd.h> // For write, assuming ft_printf uses it
-#include "../ft_printf/ft_printf.h" // Include ft_printf header
+#include <unistd.h>
+#include "../ft_printf/ft_printf.h"
+
+typedef struct	s_point
+{
+	int	x;
+	int	y;
+}	t_point;
 
 typedef struct	s_map
 {
@@ -26,6 +32,12 @@ typedef struct	s_map
 	int	length;
 	int	player_x;
 	int	player_y;
+
+	void	*wall_image;
+	void	*floor_image;
+	void	*player_image;
+	void	*collectable_image;
+	void	*exit_image;
 }	t_map;
 
 int		close_window(void *param);
@@ -35,5 +47,9 @@ void    ft_free_map(t_map *map, int lines);
 int		ft_validate_format(t_map *map);
 size_t	ft_strlen(const char *s);
 void	ft_trim_newline(char *str);
+int		ft_check_path(t_map *game);
+void	ft_free_tab(char **tab);
+int	ft_load_textures(t_map *game, void *mlx_ptr);
+void	ft_render_map(t_map *game, void *mlx_ptr, void *window);
 
 #endif
