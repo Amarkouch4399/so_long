@@ -106,9 +106,9 @@ static int	validate_counts(int *counts)
 		ft_printf("Error\nMap must contain exactly one player 'P'.\n");
 		return (1);
 	}
-	if (counts[1] == 0)
+	if (counts[1] != 1)
 	{
-		ft_printf("Error\nMap must contain at least one exit 'E'.\n");
+		ft_printf("Error\nMap must contain exactly one exit 'E'.\n");
 		return (1);
 	}
 	if (counts[2] == 0)
