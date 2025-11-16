@@ -107,13 +107,6 @@ char	*get_next_line(int fd)
 	if (!left_c)
 		return (NULL);
 	line = ft_extract_line(left_c);
-	/*
-	 * if (!line || line[0] == '\0')
-	 * {
-	 * ft_free(&line);
-	 * return (NULL);
-	 * }
-	*/
 	new_left = ft_rest(left_c);
 	if (!new_left)
 		ft_free(&left_c);

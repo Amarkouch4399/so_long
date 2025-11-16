@@ -22,6 +22,9 @@ SRC	= so_long.c \
 	  utils/ft_free_tab.c \
 	  utils/ft_load_textures.c \
 	  utils/ft_render_map.c \
+	  utils/ft_read_map.c \
+	  utils/ft_setup_game.c \
+	  utils/ft_move_player.c \
 	  parsing/ft_validate_format.c \
 	  $(GNL_DIR)/get_next_line.c \
 	  $(GNL_DIR)/get_next_line_utils.c \

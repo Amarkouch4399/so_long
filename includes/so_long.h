@@ -11,27 +11,32 @@
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
-#define SO_LONG_H
+# define SO_LONG_H
 
-#include "../minilibx-linux/mlx.h"
-#include "../gnl/get_next_line.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include "../ft_printf/ft_printf.h"
+# include "../minilibx-linux/mlx.h"
+# include "../gnl/get_next_line.h"
+# include <stdlib.h>
+# include <unistd.h>
+# include "../ft_printf/ft_printf.h"
 
-typedef struct	s_point
+typedef struct s_point
 {
 	int	x;
 	int	y;
 }	t_point;
 
-typedef struct	s_map
+typedef struct s_map
 {
 	char	**tab;
-	int	width;
-	int	length;
-	int	player_x;
-	int	player_y;
+	int		width;
+	int		length;
+	int		player_x;
+	int		player_y;
+	int		moves;
+	int		collectibles;
+
+	void	*mlx_ptr;
+	void	*window;
 
 	void	*wall_image;
 	void	*floor_image;
@@ -43,13 +48,18 @@ typedef struct	s_map
 int		close_window(void *param);
 char	*ft_strstr(const char *big, const char *little);
 void	ft_length(int fd, t_map *map);
-void    ft_free_map(t_map *map, int lines);
+void	ft_free_map(t_map *map, int lines);
 int		ft_validate_format(t_map *map);
+char	**ft_read_map(int fd, t_map map);
+int		ft_read_and_validate(const char *path, t_map *map);
+int		ft_init_graphics(t_map *map, void **mlx_ptr, void **window);
 size_t	ft_strlen(const char *s);
 void	ft_trim_newline(char *str);
 int		ft_check_path(t_map *game);
 void	ft_free_tab(char **tab);
-int	ft_load_textures(t_map *game, void *mlx_ptr);
+int		ft_load_textures(t_map *game, void *mlx_ptr);
 void	ft_render_map(t_map *game, void *mlx_ptr, void *window);
+int		ft_handle_key(int keycode, void *param);
+int		ft_move_player(t_map *map, int dx, int dy);
 
 #endif

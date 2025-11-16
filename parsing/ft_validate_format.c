@@ -21,7 +21,7 @@ static int	ft_check_rectangular(t_map *map)
 	{
 		if ((int)ft_strlen(map->tab[i]) != map->width)
 		{
-			ft_printf("Error : map is not rectangular.\n");
+			ft_printf("Error\nMap is not rectangular.\n");
 			return (1);
 		}
 		i++;
@@ -38,7 +38,7 @@ static int	ft_check_horizontal_walls(t_map *map)
 	{
 		if (map->tab[0][j] != '1' || map->tab[map->length - 1][j] != '1')
 		{
-			ft_printf("Error : map is not surrounded by walls.\n");
+			ft_printf("Error\nMap is not surrounded by walls.\n");
 			return (1);
 		}
 		j++;
@@ -55,7 +55,7 @@ static int	ft_check_vertical_walls(t_map *map)
 	{
 		if (map->tab[i][0] != '1' || map->tab[i][map->width - 1] != '1')
 		{
-			ft_printf("Error : map is not surrounded by walls.\n");
+			ft_printf("Error\nMap is not surrounded by walls.\n");
 			return (1);
 		}
 		i++;
@@ -93,7 +93,7 @@ static int	process_char(t_map *map, int i, int j, int *counts)
 		counts[2]++;
 	else if (map->tab[i][j] != '0' && map->tab[i][j] != '1')
 	{
-		ft_printf("Error : invalid character in map: %c\n", map->tab[i][j]);
+		ft_printf("Error\nInvalid character in map: %c\n", map->tab[i][j]);
 		return (1);
 	}
 	return (0);
@@ -103,17 +103,17 @@ static int	validate_counts(int *counts)
 {
 	if (counts[0] != 1)
 	{
-		ft_printf("Error : map must contain exactly one player 'P'.\n");
+		ft_printf("Error\nMap must contain exactly one player 'P'.\n");
 		return (1);
 	}
 	if (counts[1] == 0)
 	{
-		ft_printf("Error : map must contain at least one exit 'E'.\n");
+		ft_printf("Error\nMap must contain at least one exit 'E'.\n");
 		return (1);
 	}
 	if (counts[2] == 0)
 	{
-		ft_printf("Error : map must contain at least one collectible 'C'.\n");
+		ft_printf("Error\nMap must contain at least one collectible 'C'.\n");
 		return (1);
 	}
 	return (0);
@@ -138,7 +138,10 @@ static int	ft_check_characters_and_counts(t_map *map)
 		}
 		i++;
 	}
-	return (validate_counts(counts));
+	if (validate_counts(counts) != 0)
+		return (1);
+	map->collectibles = counts[2];
+	return (0);
 }
 
 int	ft_validate_format(t_map *map)
@@ -149,9 +152,10 @@ int	ft_validate_format(t_map *map)
 		return (1);
 	if (ft_check_characters_and_counts(map) != 0)
 		return (1);
-	if (ft_check_path(map))
-			return (1);
-	else
-			ft_printf("Error\nAll collectibles and exit are not reachable.\n");
+	if (ft_check_path(map) == 0)
+	{
+		ft_printf("Error\nAll collectibles and exit are not reachable.\n");
+		return (1);
+	}
 	return (0);
 }

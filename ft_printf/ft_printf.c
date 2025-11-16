@@ -64,6 +64,7 @@ int	ft_percentage(const char *format, va_list arg, int i)
 		return (count);
 	}
 }
+
 int	ft_printf(const char *format, ...)
 {
 	int			i;

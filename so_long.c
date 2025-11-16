@@ -11,44 +11,49 @@
 /* ************************************************************************** */
 
 #include "includes/so_long.h"
-#include <string.h>
 
 int	close_window(void *param)
 {
-	(void)param;
+	t_map	*map;
+
+	map = (t_map *)param;
+	if (map)
+	{
+		if (map->window && map->mlx_ptr)
+			mlx_destroy_window(map->mlx_ptr, map->window);
+		if (map->mlx_ptr)
+		{
+			mlx_destroy_display(map->mlx_ptr);
+			free(map->mlx_ptr);
+			map->mlx_ptr = NULL;
+		}
+		if (map->tab)
+		{
+			ft_free_tab(map->tab);
+			map->tab = NULL;
+		}
+	}
 	exit(0);
 }
 
-int	ft_key_close(int keycode, void *param)
+int	ft_handle_key(int keycode, void *param)
 {
-    if (keycode == 65307)
-        close_window(param);
-    return (0);
-}
+	t_map	*map;
 
-char	**ft_read_map(int fd, t_map map)
-{
-	char	*line;
-	char	**tab_map;
-	int	i;
-	int	length;
-
-	if (fd < 0)
-		return (NULL);
-	length = map.length;
-	tab_map = malloc(sizeof(char *) * (length + 1));
-	if (!tab_map)
-		return (NULL);
-	i = 0;
-	while ((line = get_next_line(fd)))
-	{
-		ft_trim_newline(line);
-		tab_map[i] = line;
-		i++;
-	}
-	tab_map[i] = NULL;
-	close(fd);
-	return (tab_map);
+	map = (t_map *)param;
+	if (!map)
+		return (0);
+	if (keycode == 65307)
+		close_window(map);
+	else if (keycode == 119 || keycode == 87)
+		ft_move_player(map, 0, -1);
+	else if (keycode == 115 || keycode == 83)
+		ft_move_player(map, 0, 1);
+	else if (keycode == 97 || keycode == 65)
+		ft_move_player(map, -1, 0);
+	else if (keycode == 100 || keycode == 68)
+		ft_move_player(map, 1, 0);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -56,45 +61,25 @@ int	main(int argc, char **argv)
 	t_map	map;
 	void	*mlx_ptr;
 	void	*window;
-	int	fd;
 
-	if (argc != 2 || ft_strstr(argv[1], ".ber") == NULL)
+	if (argc != 2 || !ft_strstr(argv[1], ".ber"))
 	{
-		ft_printf("Error arguments\n");
-		return 0;
+		ft_printf("Error\nInvalid arguments\n");
+		return (1);
 	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		return (perror("open"), 1);
-	ft_length(fd, &map);
-	close(fd);
-	printf("%d\n", map.width);
-	printf("%d\n", map.length);
-	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-		return (perror("open"), 1);
-	map.tab = ft_read_map(fd, map);
-	close(fd);
-	ft_validate_format(&map);
-	ft_printf("=== MAP ===\n");
-    	int	i = 0;
-    	while (i < map.length)
-    	{
-        	if (map.tab[i])
-            	printf("%s\n", map.tab[i]);
-        	i++;
-    	}
-	mlx_ptr = mlx_init();
-	if (!mlx_ptr)
-		return (0);
-	ft_load_textures(&map, mlx_ptr);
-	window = mlx_new_window(mlx_ptr, map.width*64, map.length*64, "so_long");
-	if (!window)
-		return(ft_printf("Error\nFailed to create window\n"), 1);
+	if (ft_read_and_validate(argv[1], &map) != 0)
+		return (1);
+	if (ft_init_graphics(&map, &mlx_ptr, &window) != 0)
+	{
+		ft_free_tab(map.tab);
+		return (1);
+	}
+	map.moves = 0;
+	map.mlx_ptr = mlx_ptr;
+	map.window = window;
 	ft_render_map(&map, mlx_ptr, window);
-	mlx_key_hook(window, ft_key_close, NULL);
-	mlx_hook(window, 17, 0, close_window, NULL);
+	mlx_key_hook(window, ft_handle_key, &map);
+	mlx_hook(window, 17, 0, close_window, &map);
 	mlx_loop(mlx_ptr);
 	return (0);
-	
 }

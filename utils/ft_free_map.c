@@ -12,18 +12,18 @@
 
 #include "../includes/so_long.h"
 
-void    ft_free_map(t_map *map, int lines)
+void	ft_free_map(t_map *map, int lines)
 {
-    int i;
+	int	i;
 
-    if (!map || !map->tab)
-        return;
-    i = 0;
-    while (i < lines)
-    {
-        free(map->tab[i]);
-        i++;
-    }
-    free(map->tab);
-    map->tab = NULL;
+	if (!map || !map->tab)
+		return ;
+	i = 0;
+	while (i < lines)
+	{
+		free(map->tab[i]);
+		i++;
+	}
+	free(map->tab);
+	map->tab = NULL;
 }
